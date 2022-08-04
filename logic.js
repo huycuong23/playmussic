@@ -15,8 +15,13 @@ const btnRandom = $(".btn-random");
 const singer = $(".singer");
 const playlist = $(".playlist");
 const hourSecond = $(".second .hour-second");
+const vlUp = $(".icon-vlup");
+const vlDown = $(".icon-vldown");
+const vl = $(".icon-vl");
+const slider = $(".slider");
 const app = {
   currentIndex: 0,
+  defaultVolum: 1,
   isPlaying: false,
   isRandom: false,
   isRepeat: false,
@@ -107,6 +112,44 @@ const app = {
     });
   },
   handleEvent: function () {
+    // click volumm
+    slider.onclick = function (e) {
+      app.defaultVolum = e.target.value / 100;
+      audio.volume = app.defaultVolum;
+    };
+    vlUp.onclick = function () {
+      if (app.defaultVolum < 0.9 && app.defaultVolum >= 0) {
+        app.defaultVolum = app.defaultVolum + 0.1;
+        audio.volume = app.defaultVolum;
+        slider.value = app.defaultVolum * 100;
+      } else {
+        app.defaultVolum = 1;
+        audio.volume = app.defaultVolum;
+        slider.value = app.defaultVolum * 100;
+      }
+    };
+    vlDown.onclick = function () {
+      if (app.defaultVolum > 0.1 && app.defaultVolum <= 1) {
+        app.defaultVolum = app.defaultVolum - 0.1;
+        audio.volume = app.defaultVolum;
+        slider.value = app.defaultVolum * 100;
+      } else {
+        app.defaultVolum = 0;
+        audio.volume = app.defaultVolum;
+        slider.value = app.defaultVolum * 100;
+      }
+    };
+    vl.onclick = function () {
+      if (app.defaultVolum === 0) {
+        app.defaultVolum = 0.5;
+        audio.volume = app.defaultVolum;
+        slider.value = app.defaultVolum * 100;
+      } else {
+        app.defaultVolum = 0;
+        audio.volume = app.defaultVolum;
+        slider.value = app.defaultVolum * 100;
+      }
+    };
     // xử lý phóng to thu nhỏ cd
     const csWidth = cd.offsetWidth;
     document.onscroll = () => {
@@ -294,6 +337,8 @@ const app = {
   },
 };
 app.start();
-setInterval(function() {
-  hourSecond.innerHTML = `${Math.floor((audio.currentTime / audio.duration) * 100)} s`
-}, 100)
+setInterval(function () {
+  hourSecond.innerHTML = `${Math.floor(
+    (audio.currentTime / audio.duration) * 100
+  )} s`;
+}, 100);

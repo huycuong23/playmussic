@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -62,15 +62,21 @@
 
         <div class="second">
           <input
-          id="progress"
-          class="progress"
-          type="range"
-          value="0"
-          step="1"
-          min="0"
-          max="100"
-        />
-        <p class="hour-second"></p>
+            id="progress"
+            class="progress"
+            type="range"
+            value="0"
+            step="1"
+            min="0"
+            max="100"
+          />
+          <p class="hour-second"></p>
+          <input type="range" min="0" max="100" value="100" class="slider" id="myRange">
+          <p class="volume">
+            <i class="icon icon-vldown ti-minus"></i>
+            <i class="icon icon-vl ti-volume"></i>
+            <i class="icon icon-vlup ti-plus"></i>
+          </p>
         </div>
 
         <audio id="audio" src=""></audio>
@@ -79,9 +85,7 @@
       <!-- Playlist -->
       <div class="playlist"></div>
     </div>
-    <script src="./logic.js">
-    </script>
-    <img src="" alt="">
+    <script src="./logic.js"></script>
+    <img src="" alt="" />
   </body>
 </html>
-
