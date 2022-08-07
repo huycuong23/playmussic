@@ -338,7 +338,5 @@ const app = {
 };
 app.start();
 setInterval(function () {
-  hourSecond.innerHTML = `${Math.floor(
-    (audio.currentTime / audio.duration) * 100
-  )} s`;
+  hourSecond.innerHTML = `${Math.floor(audio.currentTime)} s / ${Math.floor(audio.duration)} s`;
 }, 100);
