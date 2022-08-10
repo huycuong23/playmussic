@@ -194,6 +194,7 @@ const app = {
         audio.play();
       } else {
         app.playnext();
+        app.render();
         audio.play();
       }
     };
@@ -323,6 +324,7 @@ const app = {
     } while (newIndex === this.currentIndex);
     app.currentIndex = newIndex;
     this.loadCurrentSong();
+    this.render();
     audio.play();
   },
   start: function () {
