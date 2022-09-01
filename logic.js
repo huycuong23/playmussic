@@ -177,7 +177,7 @@ const app = {
       cdThumb.classList.remove("cd-playing");
     };
     audio.ontimeupdate = function () {
-      if (audio.duration) {
+      if (audio.duration && !progress.onclick) {
         const progressPercent = Math.floor(
           (audio.currentTime / audio.duration) * 100
         );
