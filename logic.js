@@ -19,71 +19,95 @@ const vlUp = $(".icon-vlup");
 const vlDown = $(".icon-vldown");
 const vl = $(".icon-vl");
 const slider = $(".slider");
+const LOCALStorgeKey = "HUYCUONG23";
+
+
 const app = {
   currentIndex: 0,
   defaultVolum: 1,
+  mouseDownProgress: false,
   isPlaying: false,
   isRandom: false,
   isRepeat: false,
-  isStar: false,
+  config: JSON.parse(localStorage.getItem(LOCALStorgeKey)) || {},
+  
+  setconfig: function (key, value) {
+    this.config[key] = value;
+    localStorage.setItem(LOCALStorgeKey, JSON.stringify(this.config));
+  },
+  loadconfig: function () {
+    app.isRandom = app.config.isRandom;
+    app.isRepeat = app.config.isRepeat;
+    app.defaultVolum = app.config.defaultVolum || 1;
+  },
   songs: [
     {
       name: "Nang tinh hay nhe long",
       singer: "Tong Gia Vi",
       path: "./access/path/1.mp3",
       image: "./access/img/1.jfif",
+      isStar: false,
     },
     {
       name: "nu cuoi 18 20",
       singer: "Doan Hieu",
       path: "./access/path/2.mp3",
       image: "./access/img/2.jpg",
+      isStar: false,
     },
     {
       name: "Xin",
       singer: "Dat G",
       path: "./access/path/3.mp3",
       image: "./access/img/3.jpg",
+      isStar: false,
     },
     {
       name: "tam su tuoi 30",
       singer: "Trinh Thang Binh",
       path: "./access/path/4.mp3",
       image: "./access/img/4.jpg",
+      isStar: false,
     },
     {
       name: "phan boi chinh minh",
       singer: "Quan AP",
       path: "./access/path/5.mp3",
       image: "./access/img/5.jpg",
+      isStar: false,
     },
     {
       name: "buoc qua mua co don",
       singer: "Vũ",
       path: "./access/path/6.mp3",
       image: "./access/img/6.jfif",
+      isStar: false,
     },
     {
       name: "bat coc con tim",
       singer: "Lou Hoàng",
       path: "./access/path/7.mp3",
       image: "./access/img/7.png",
+      isStar: false,
     },
     {
       name: "Hanh Phuc Moi",
       singer: "Sơn Tùng MTP",
       path: "./access/path/8.mp3",
       image: "./access/img/8.jpg",
+      isStar: false,
     },
     {
       name: "Trốn Tìm",
       singer: "Đen",
       path: "./access/path/9.mp3",
       image: "./access/img/9.jpg",
+      isStar: false,
     },
   ],
   render: function () {
     const htmls = this.songs.map((song, index) => {
+      star = song.isStar;
       return `<div data-index="${index}" class="song ${
         index === this.currentIndex ? "active" : ""
       }">
@@ -97,7 +121,9 @@ const app = {
           <h3 class="title">${song.name}</h3>
           <p class="author">${song.singer}</p>
         </div>
-        <div class="option">
+        <div data-index="${index}" class="option ${
+        song.isStar == true ? "active" : ""
+      }">
           <i class="ti-star"></i>
         </div>
       </div>`;
@@ -113,19 +139,23 @@ const app = {
   },
   handleEvent: function () {
     // click volumm
+    const songs = this.songs;
     slider.onclick = function (e) {
       app.defaultVolum = e.target.value / 100;
       audio.volume = app.defaultVolum;
+      app.setconfig("defaultVolum", app.defaultVolum)
     };
     vlUp.onclick = function () {
       if (app.defaultVolum < 0.9 && app.defaultVolum >= 0) {
         app.defaultVolum = app.defaultVolum + 0.1;
         audio.volume = app.defaultVolum;
         slider.value = app.defaultVolum * 100;
+        app.setconfig("defaultVolum", app.defaultVolum)
       } else {
         app.defaultVolum = 1;
         audio.volume = app.defaultVolum;
         slider.value = app.defaultVolum * 100;
+        app.setconfig("defaultVolum", app.defaultVolum)
       }
     };
     vlDown.onclick = function () {
@@ -133,21 +163,26 @@ const app = {
         app.defaultVolum = app.defaultVolum - 0.1;
         audio.volume = app.defaultVolum;
         slider.value = app.defaultVolum * 100;
+        app.setconfig("defaultVolum", app.defaultVolum)
+
       } else {
         app.defaultVolum = 0;
         audio.volume = app.defaultVolum;
         slider.value = app.defaultVolum * 100;
+        app.setconfig("defaultVolum", app.defaultVolum)
+
       }
     };
     vl.onclick = function () {
-      if (app.defaultVolum === 0) {
-        app.defaultVolum = 0.5;
+      if (audio.volume === 0) {
         audio.volume = app.defaultVolum;
         slider.value = app.defaultVolum * 100;
+        app.setconfig("defaultVolum", app.defaultVolum)
+
       } else {
-        app.defaultVolum = 0;
-        audio.volume = app.defaultVolum;
-        slider.value = app.defaultVolum * 100;
+        audio.volume = 0;
+        slider.value = 0;
+
       }
     };
     // xử lý phóng to thu nhỏ cd
@@ -176,14 +211,22 @@ const app = {
       player.classList.remove("playing");
       cdThumb.classList.remove("cd-playing");
     };
-    audio.ontimeupdate = function () {
-      if (audio.duration && !progress.onclick) {
+    // mousedown progress do not update
+    progress.onmousedown = () => {
+      app.mouseDownProgress = true;
+    };
+    progress.onmouseup = () => {
+      app.mouseDownProgress = false;
+    };
+    audio.ontimeupdate = () => {
+      if (!app.mouseDownProgress) {
         const progressPercent = Math.floor(
           (audio.currentTime / audio.duration) * 100
         );
         progress.value = progressPercent;
       }
     };
+    // click time update
     progress.onclick = function (e) {
       const seekTime = (audio.duration / 100) * e.target.value;
       audio.currentTime = seekTime;
@@ -193,9 +236,13 @@ const app = {
         audio.currentTime = 0;
         audio.play();
       } else {
-        app.playnext();
-        app.render();
-        audio.play();
+        if (app.isRandom) {
+          app.playRandom();
+        } else {
+          app.playnext();
+          app.render();
+          audio.play();
+        }
       }
     };
     document.body.onkeyup = function (e) {
@@ -222,12 +269,13 @@ const app = {
           audio.play();
         }
         if (e.target.closest(".option")) {
-          if (app.isStar === false) {
+          const starIndex = e.target.closest(".option").dataset.index;
+          if (songs[starIndex].isStar === false) {
             e.target.closest(".option").classList.add("active");
-            app.isStar = true;
+            songs[starIndex].isStar = true;
           } else {
             e.target.closest(".option").classList.remove("active");
-            app.isStar = false;
+            songs[starIndex].isStar = false;
           }
         }
       }
@@ -281,14 +329,17 @@ const app = {
       });
     }, 300);
   },
-  rePeatSong: function () {
+  repeatSong: function () {
     btnRepeat.onclick = function () {
       if ($(".btn.active")) {
         btnRepeat.classList.remove("active");
         app.isRepeat = false;
+        app.setconfig("isRepeat", app.isRepeat);
       } else {
         btnRepeat.classList.add("active");
         app.isRepeat = true;
+        app.setconfig("isRepeat", app.isRepeat);
+
       }
     };
   },
@@ -311,9 +362,11 @@ const app = {
       if ($(".btn.active")) {
         btnRandom.classList.remove("active");
         app.isRandom = false;
+        app.setconfig("isRandom", app.isRandom);
       } else {
         btnRandom.classList.add("active");
         app.isRandom = true;
+        app.setconfig("isRandom", app.isRandom);
       }
     };
   },
@@ -328,17 +381,29 @@ const app = {
     audio.play();
   },
   start: function () {
+    
+    this.loadconfig();
+    if (this.config.isRandom) {
+      btnRandom.classList.add("active");
+    }
+    if (this.config.isRepeat) {
+      btnRepeat.classList.add("active");
+    }
+    audio.volume = app.defaultVolum;
+    slider.value = app.defaultVolum * 100;
     this.definePropoties();
     this.loadCurrentSong();
     this.handleEvent();
     this.nextSong();
     this.preSong();
-    this.rePeatSong();
+    this.repeatSong();
     this.randomSong();
     this.render();
   },
 };
 app.start();
 setInterval(function () {
-  hourSecond.innerHTML = `${Math.floor(audio.currentTime)} s / ${Math.floor(audio.duration)} s`;
+  hourSecond.innerHTML = `${Math.floor(audio.currentTime)} s / ${Math.floor(
+    audio.duration
+  )} s`;
 }, 100);

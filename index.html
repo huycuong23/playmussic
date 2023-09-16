@@ -22,65 +22,65 @@
   <body>
     <div class="player">
       <!-- Dashboard -->
-      <div class="dashboard">
-        <!-- Header -->
-        <header>
-          <h4>Now playing:</h4>
-          <h2>String 57th & 9th</h2>
-          <h2 class="singer"></h2>
-        </header>
-
-        <!-- CD -->
-        <div class="cd">
-          <div
-            class="cd-thumb"
-            style="
-              background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg');
-            "
-          ></div>
-        </div>
-
-        <!-- Control -->
-        <div class="control">
-          <div class="btn btn1 btn-repeat">
-            <i class="ti-reload"></i>
+        <div class="dashboard">
+          <!-- Header -->
+          <header>
+            <h4>Now playing:</h4>
+            <h2>String 57th & 9th</h2>
+            <h2 class="singer"></h2>
+          </header>
+  
+          <!-- CD -->
+          <div class="cd">
+            <div
+              class="cd-thumb"
+              style="
+                background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg');
+              "
+            ></div>
           </div>
-          <div class="btn btn1 btn-prev">
-            <i class="ti-control-skip-backward"></i>
+  
+          <!-- Control -->
+          <div class="control">
+            <div class="btn btn1 btn-repeat">
+              <i class="ti-reload"></i>
+            </div>
+            <div class="btn btn1 btn-prev">
+              <i class="ti-control-skip-backward"></i>
+            </div>
+            <div class="btn btn-toggle-play">
+              <i class="ti-control-pause"></i>
+              <i class="ti-control-play"></i>
+            </div>
+            <div class="btn btn1 btn-next">
+              <i class="ti-control-skip-forward"></i>
+            </div>
+            <div class="btn btn1 btn-random">
+              <i class="ti-control-shuffle"></i>
+            </div>
           </div>
-          <div class="btn btn-toggle-play">
-            <i class="ti-control-pause"></i>
-            <i class="ti-control-play"></i>
+  
+          <div class="second">
+            <input
+              id="progress"
+              class="progress"
+              type="range"
+              value="0"
+              step="1"
+              min="0"
+              max="100"
+            />
+            <p class="hour-second"></p>
+            <input type="range" min="0" max="100" value="100" class="slider" id="myRange">
+            <p class="volume">
+              <i class="icon icon-vldown ti-minus"></i>
+              <i class="icon icon-vl ti-volume"></i>
+              <i class="icon icon-vlup ti-plus"></i>
+            </p>
           </div>
-          <div class="btn btn1 btn-next">
-            <i class="ti-control-skip-forward"></i>
-          </div>
-          <div class="btn btn1 btn-random">
-            <i class="ti-control-shuffle"></i>
-          </div>
-        </div>
-
-        <div class="second">
-          <input
-            id="progress"
-            class="progress"
-            type="range"
-            value="0"
-            step="1"
-            min="0"
-            max="100"
-          />
-          <p class="hour-second"></p>
-          <input type="range" min="0" max="100" value="100" class="slider" id="myRange">
-          <p class="volume">
-            <i class="icon icon-vldown ti-minus"></i>
-            <i class="icon icon-vl ti-volume"></i>
-            <i class="icon icon-vlup ti-plus"></i>
-          </p>
-        </div>
-
-        <audio id="audio" src=""></audio>
-      </div>
+  
+          <audio id="audio" src=""></audio>
+     </div>
 
       <!-- Playlist -->
       <div class="playlist"></div>

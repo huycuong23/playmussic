@@ -3,9 +3,7 @@
   --text-color: #333;
 }
 .player {
-  position: relative;
-  max-width: 480px;
-  margin: 0 auto;
+  display: flex;
 }
 .player .ti-control-pause {
   display: none;
@@ -22,19 +20,18 @@
   user-select: none;
 }
 .dashboard {
+  margin: 10px 10px;
   padding: 16px 16px 14px;
   background-color: #fff;
-  position: fixed;
-  top: 0;
+  height: 100vh;
   width: 100%;
-  max-width: 480px;
-  border-bottom: 1px solid #ebebeb;
+  max-width: 440px;
+  vertical-align: center;
 }
-
 /* HEADER */
 header {
   text-align: center;
-  margin-bottom: 10px;
+  margin: 20px;
 }
 
 header h4 {
@@ -52,6 +49,7 @@ header h2 {
   display: flex;
   margin: auto;
   width: 200px;
+  margin-top: 40px;
 }
 
 .cd-thumb {
@@ -68,7 +66,8 @@ header h2 {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 18px 0 8px 0;
+  padding: 28px 0 8px 0;
+  margin-top: 50px;
 }
 
 .control .btn {
@@ -116,14 +115,13 @@ header h2 {
 
 /* PLAYLIST */
 .playlist {
-  margin-top: 440px;
-  width: 100%;
+  width: 70%;
 }
 
 .song {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  margin: 12px 0;
   background-color: #fff;
   padding: 8px 16px;
   border-radius: 5px;
@@ -231,17 +229,19 @@ header h2 {
 .slider {
   position: absolute;
   top: -120px;
-  height: 6px;
+  height: 10px;
+  margin: 0px 0;
   right: 0;
   -webkit-appearance: none;
   appearance: none;
   background-color: rgba(0, 0, 0, 0.104);
   opacity: 0.7;
+  cursor: pointer;
 }
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 12px;
-  height: 6px;
+  height: 8px;
   background-color: rgb(0, 0, 0);
 }
